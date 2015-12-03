@@ -1,0 +1,84 @@
+@phone: ~"only screen and (max-width: 480px)";
+@small-tablet: ~"only screen and (min-width: 481px) and (max-width: 767px)";
+@large-tablet: ~"only screen and (min-width: 768px) and (max-width: 991px)";
+@small-desktop: ~"only screen and (min-width: 992px) and (max-width: 1199px)";
+@large-desktop: ~"only screen and (min-width: 1200px)";
+@background-color: #212121;
+@highlight-color: #009A6A;
+@tile-width: 300px;
+@tile-height: 300px;
+
+#navslider {
+    width: 100%;
+    height: @tile-height;
+}
+#navslider-outer {
+    overflow-x: hidden;
+    overflow-y: hidden;
+    width: 100%;        
+    height: @tile-height;                        
+}
+#navslider-outer {    
+    min-width: 100%;
+    height: @tile-height;  
+    float: left;
+    clear: both;
+    white-space: nowrap;    
+}
+    #navslider h1 {
+        font-size: 300%;
+        display: block;
+        vertical-align: middle;
+        line-height: @tile-height;
+        width: 100%;
+        text-align: center;
+    }
+    .slide {
+        width: @tile-width;
+        height: @tile-height;                
+        display: inline-block;            
+        text-align: center;
+        border: 0.5px solid black;
+        -webkit-transition: .3s ease-in-out;
+        transition: .3s ease-in-out;
+    }
+    .slide .title {
+        font-size: 22px;
+        font-weight: 400;
+        color: white;
+        border: 2px solid white;
+        position: relative;
+        top: -160px;
+        background: rgba(0, 0, 0, 0.5);
+        pointer-events: none;
+        @media @small-desktop, @large-desktop {
+            background: rgba(0, 0, 0, 0.25);
+            visibility: hidden;
+        }
+    }
+    .slide img {
+        width: 100%;
+        height: @tile-height;
+        width: @tile-width;
+        opacity: 1;
+        -webkit-transition: .3s ease-in-out;
+        transition: .3s ease-in-out;
+    }
+    .slide figure {
+        background: @highlight-color;
+        width: @tile-width;
+        height: @tile-height;
+    }
+    .slide figure:hover img {
+        opacity: 0.5;
+        cursor: pointer;        
+    }
+    .slide:hover .title {
+        visibility: visible;
+    }
+    .slide:active img {        
+        opacity: 0.5;
+    }    
+    a.slide {
+        color: antiquewhite;
+    }

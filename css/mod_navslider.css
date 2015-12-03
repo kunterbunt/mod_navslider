@@ -1,0 +1,76 @@
+#navslider {
+  width: 100%;
+  height: 300px;
+}
+#navslider-outer {
+  overflow-x: hidden;
+  overflow-y: hidden;
+  width: 100%;
+  height: 300px;
+}
+#navslider-outer {
+  min-width: 100%;
+  height: 300px;
+  float: left;
+  clear: both;
+  white-space: nowrap;
+}
+#navslider h1 {
+  font-size: 300%;
+  display: block;
+  vertical-align: middle;
+  line-height: 300px;
+  width: 100%;
+  text-align: center;
+}
+.slide {
+  width: 300px;
+  height: 300px;
+  display: inline-block;
+  text-align: center;
+  border: 0.5px solid black;
+  -webkit-transition: 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
+}
+.slide .title {
+  font-size: 22px;
+  font-weight: 400;
+  color: white;
+  border: 2px solid white;
+  position: relative;
+  top: -160px;
+  background: rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+}
+@media only screen and (min-width: 992px) and (max-width: 1199px), only screen and (min-width: 1200px) {
+  .slide .title {
+    background: rgba(0, 0, 0, 0.25);
+    visibility: hidden;
+  }
+}
+.slide img {
+  width: 100%;
+  height: 300px;
+  width: 300px;
+  opacity: 1;
+  -webkit-transition: 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
+}
+.slide figure {
+  background: #009A6A;
+  width: 300px;
+  height: 300px;
+}
+.slide figure:hover img {
+  opacity: 0.5;
+  cursor: pointer;
+}
+.slide:hover .title {
+  visibility: visible;
+}
+.slide:active img {
+  opacity: 0.5;
+}
+a.slide {
+  color: antiquewhite;
+}
