@@ -1,6 +1,7 @@
-#navslider {
+#navslider-container {
   width: 100%;
   height: 300px;
+  overflow: hidden;
 }
 #navslider-outer {
   overflow-x: hidden;
@@ -8,7 +9,7 @@
   width: 100%;
   height: 300px;
 }
-#navslider-outer {
+#navslider {
   min-width: 100%;
   height: 300px;
   float: left;
@@ -70,7 +71,4 @@
 }
 .slide:active img {
   opacity: 0.5;
-}
-a.slide {
-  color: antiquewhite;
 }

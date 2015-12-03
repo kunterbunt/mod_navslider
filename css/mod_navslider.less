@@ -8,23 +8,24 @@
 @tile-width: 300px;
 @tile-height: 300px;
 
-#navslider {
+#navslider-container {
     width: 100%;
-    height: @tile-height;
+    height: @tile-height;    
+    overflow: hidden;
 }
-#navslider-outer {
+#navslider-outer {        
     overflow-x: hidden;
     overflow-y: hidden;
     width: 100%;        
-    height: @tile-height;                        
-}
-#navslider-outer {    
-    min-width: 100%;
     height: @tile-height;  
-    float: left;
-    clear: both;
-    white-space: nowrap;    
 }
+    #navslider {    
+        min-width: 100%;
+        height: @tile-height;    
+        float: left;
+        clear: both;
+        white-space: nowrap;    
+    }
     #navslider h1 {
         font-size: 300%;
         display: block;
@@ -79,6 +80,3 @@
     .slide:active img {        
         opacity: 0.5;
     }    
-    a.slide {
-        color: antiquewhite;
-    }

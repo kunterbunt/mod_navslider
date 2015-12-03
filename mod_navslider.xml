@@ -8,10 +8,11 @@
         <filename>mod_navslider.xml</filename>
         <filename module="mod_navslider">mod_navslider.php</filename>
         <filename>index.html</filename>
-        <filename>helper.php</filename>
-        <filename>tmpl/default.php</filename>
-        <filename>tmpl/index.html</filename>
+        <filename>helper.php</filename>        
+        <folder>tmpl</filename>
         <folder>imgs</folder>
+        <folder>js</folder>
+        <folder>css</folder>
     </files>
     <config>
     </config>

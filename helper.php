@@ -1,5 +1,4 @@
 <?php
-// This file contains the helper class which is used to do the actual work in retrieving the information to be displayed in the module (usually from the database or some other source).
 
 class modNavSlider {
     
