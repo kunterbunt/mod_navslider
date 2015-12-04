@@ -1,17 +1,17 @@
 #navslider-container {
   width: 100%;
-  height: 300px;
+  height: 364px;
   overflow: hidden;
 }
 #navslider-outer {
   overflow-x: hidden;
   overflow-y: hidden;
   width: 100%;
-  height: 300px;
+  height: 364px;
 }
 #navslider {
   min-width: 100%;
-  height: 300px;
+  height: 364px;
   float: left;
   clear: both;
   white-space: nowrap;
@@ -37,6 +37,7 @@
   font-size: 22px;
   font-weight: 400;
   color: white;
+  text-decoration: none;
   border: 2px solid white;
   position: relative;
   top: -160px;
@@ -71,4 +72,107 @@
 }
 .slide:active img {
   opacity: 0.5;
+}
+#navslider-control {
+  height: 64px;
+  margin: 0;
+  padding: 0;
+  background-color: #eee;
+}
+#navslider-control p,
+select {
+  background: #eee;
+  border-radius: 3px;
+  color: #999;
+  display: inline-block;
+  height: 64px;
+  line-height: 64px;
+  font-size: 2.5rem;
+  font-weight: 100;
+  vertical-align: top;
+  padding: 0 8px 0 8px;
+  -webkit-transition: color 0.2s;
+}
+#navslider-control select {
+  font-size: 1.75rem;
+  height: 48px;
+  margin-top: 8px;
+}
+#navslider-control img {
+  height: 64px;
+}
+#navslider-control p:hover {
+  cursor: default;
+}
+.navslider-showbox {
+  position: absolute;
+  top: 25%;
+  bottom: 0;
+  left: 50%;
+  right: 0;
+  width: 128px;
+  height: 128px;
+}
+.navslider-loader {
+  position: relative;
+  margin: 0px auto;
+  width: $width;
+}
+.navslider-loader:before {
+  content: '';
+  display: block;
+  padding-top: 100%;
+}
+.navslider-circular {
+  animation: rotate 2s linear infinite;
+  height: 100%;
+  transform-origin: center center;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+.navslider-path {
+  stroke-dasharray: 1,200;
+  stroke-dashoffset: 0;
+  animation: dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;
+  stroke-linecap: round;
+}
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1,200;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 89,200;
+    stroke-dashoffset: -35px;
+  }
+  100% {
+    stroke-dasharray: 89,200;
+    stroke-dashoffset: -124px;
+  }
+}
+@keyframes color {
+  100%,
+  0% {
+    stroke: #d62d20;
+  }
+  40% {
+    stroke: #0057e7;
+  }
+  66% {
+    stroke: #008744;
+  }
+  80%,
+  90% {
+    stroke: #ffa700;
+  }
 }

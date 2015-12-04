@@ -1,27 +1,37 @@
 <?php
 
-class modNavSlider {
+class modNavSliderHelper {
     
-    public static function getArticles() {
-        return queryDatabase_Posts('title, images, alias', 0);        
-    }
-    
-    // Query the Joomla database for posts.
-    public static function queryDatabase_Posts($select, $limit) {
-        // Database connection and query object.
+    public static function queryDatabase($table, $select, $where, $limit, $order) {
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);    
         $query->select($select);
-        $query->from($db->quoteName('#__content'));
-        // Published posts only.
-        $query->where($db->quoteName('state') . ' = 1'); 
-        // Order by the date they are published.
-        $query->order('publish_up DESC');
-        if ($limit > 0)
-            $query->setLimit($limit);
-        // Set and fetch.
+        $query->from($db->quoteName($table));    
+        if (!($where === NULL))
+            $query->where($where); 
+        if (!($order === NULL))
+            $query->order($order);        
+        if (!($limit === NULL) && $limit > 0)
+            $query->setLimit($limit);        
         $db->setQuery($query);
-        return $db->loadAssocList();     
+        return $db->loadAssocList();    
+    }
+    
+    public static function updateSliderAjax() {
+        $input = JFactory::getApplication()->input;
+		$categoryId  = $input->get('data');
+        if ($categoryId > -1)
+            $categoryData = modNavSliderHelper::queryDatabase('#__content', 'title, images, alias', 'state = 1 AND catid = ' . $categoryId, 0, NULL);
+        else
+            $categoryData = modNavSliderHelper::queryDatabase('#__content', 'title, images, alias', 'state = 1', 0, NULL);
+        for ($i = 0; $i < count($categoryData); $i++) {
+            $categoryData[$i] += array('image_fulltext' => modNavSliderHelper::parseImageString('image_fulltext', $categoryData[$i]['images']));
+            $categoryData[$i] += array('image_intro' => modNavSliderHelper::parseImageString('image_intro', $categoryData[$i]['images']));
+        }
+        $result = array();
+        $result['articles'] = $categoryData;
+        $result['url'] = JURI::root();
+        return json_encode($result);
     }
     
     // Image attributes of articles are saved in one long String in the 
