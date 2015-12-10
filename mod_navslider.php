@@ -8,14 +8,7 @@ require_once dirname(__FILE__) . '/helper.php';
 $articles = modNavSliderHelper::queryDatabase('#__content', 'title, images, alias', 'state = 1', 0, 'publish_up DESC');
 
 // Fetch categories from database.
-$categoriesFromDb = modNavSliderHelper::queryDatabase('#__categories', 'title, id', NULL, 0, 'title ASC');
-// Remove unwanted categories. 
-$categories[] = array('title' => 'All', 'id' => -1);
-for ($i = 0; $i < count($categoriesFromDb); $i++) {
-    if ($categoriesFromDb[$i]['title'] !== "Uncategorised" && $categoriesFromDb[$i]['title'] !== "ROOT") {        
-        $categories[] = array('title' => $categoriesFromDb[$i]['title'], 'id' => $categoriesFromDb[$i]['id']);
-    }        
-}
+$categories = modNavSliderHelper::getCategories();
 
 // Load CSS & JS.
 $document = JFactory::getDocument();

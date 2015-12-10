@@ -80,6 +80,9 @@
   padding: 0;
   background-color: #eee;
 }
+#navslider-category-selector {
+  max-width: 25%;
+}
 #navslider-category-selector:hover {
   cursor: pointer;
 }

@@ -21,6 +21,31 @@ class modNavSliderHelper {
     }
     
     /**
+     * Fetches all active categories from the database and sorts and orders them so that the 
+     * category hierarchy is represented.
+     */
+    public static function getCategories() {
+        jimport('joomla.application.categories');
+        // Fetch categories from database.
+        $categoriesFromDb = modNavSliderHelper::queryDatabase('#__categories', 'title, id, level', 'level = 1', 0, 'created_time ASC');
+        // Remove unwanted categories. 
+        $categories[] = array('title' => 'All', 'id' => -1);
+        for ($i = 0; $i < count($categoriesFromDb); $i++) {
+            if ($categoriesFromDb[$i]['title'] !== "Uncategorised" && $categoriesFromDb[$i]['title'] !== "ROOT") {        
+                $categories[] = array('title' => $categoriesFromDb[$i]['title'], 'id' => $categoriesFromDb[$i]['id']);
+                $categories = modNavSliderHelper::getChildrenCategoryStrings($categoriesFromDb[$i]['id'], $categories, 1);
+//                $children = JCategories::getInstance('Content')->get($categoriesFromDb[$i]['id'])->getChildren();
+//                for ($j = 0; $j < count($children); $j++) {
+//                    $categories[] = array('title' => str_repeat('&nbsp;', 1) . $children[$j]->get('title'), 'id' => $children[$j]->get('id'));
+//                }
+            }  
+        }
+        return $categories;
+    }
+    
+    
+    
+    /**
     * Loads article information for the category (and sub-categories)
     * that the user selected in the slider and returns that to the calling
     * AJAX function.
@@ -83,6 +108,23 @@ class modNavSliderHelper {
             $ids = modNavSliderHelper::getChildrenCategoryIds($ids[count($ids) - 1], $ids);
         }
         return $ids;
+    }
+    
+    /**
+    * Looks up all child categories for category with $id
+    * and their children recursively, returning an array containing
+    * strings that represent the category hierarchy.
+    */
+    public static function getChildrenCategoryStrings($id, $strings, $level) {
+        jimport('joomla.application.categories');        
+        $children = JCategories::getInstance('Content')->get($id)->getChildren();              
+        for ($i = 0; $i < count($children); $i++) {
+            // Append to array.
+            $strings[] = array('title' => str_repeat('&nbsp;', $level) . $children[$i]->get('title'), 'id' => $children[$i]->get('id'));        
+            // Recursively add their children, too.
+            $strings = modNavSliderHelper::getChildrenCategoryStrings($children[$i]->get('id'), $strings, $level + 1);
+        }
+        return $strings;
     }
         
     /**
