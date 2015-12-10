@@ -80,6 +80,9 @@
   padding: 0;
   background-color: #eee;
 }
+#navslider-category-selector:hover {
+  cursor: pointer;
+}
 #navslider-no-articles-msg {
   position: absolute;
   width: 100%;
