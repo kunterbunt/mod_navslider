@@ -2,6 +2,9 @@
 
 class modNavSliderHelper {
     
+    /**
+    * Convenience function to query the Joomla database.
+    */
     public static function queryDatabase($table, $select, $where, $limit, $order) {
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);    
@@ -17,36 +20,59 @@ class modNavSliderHelper {
         return $db->loadAssocList();    
     }
     
+    /**
+    * Loads article information for the category (and sub-categories)
+    * that the user selected in the slider and returns that to the calling
+    * AJAX function.
+    */
     public static function updateSliderAjax() {        
         $input = JFactory::getApplication()->input;
-		$categoryId  = $input->get('data');
-        
-        // Get children categories.
-        $id = $categoryId;
-        $ids = array();
-        $ids[0] = $categoryId;
-        $ids = modNavSliderHelper::getChildrenCategoryIds($ids[0], $ids);
+		$categoryId  = $input->get('data');                               
         
         // Prepare answer array.
         $result = array();        
-        $result['url'] = JURI::root();
-        $result['numberOfArticles'] = count($ids);
+        $result['url'] = JURI::root();        
         
-        // Go through all IDs.
-        for ($i = 0; $i < count($ids); $i++) {
+         // -1 represents all categories - fetch all articles in that case.
+        if ($categoryId == -1) {
             // Get article info from database.
-            $categoryData = $categoryData = modNavSliderHelper::queryDatabase('#__content', 'title, images, alias', 'state = 1 AND catid = ' . $ids[$i], 0, NULL);
+            $categoryData = $categoryData = modNavSliderHelper::queryDatabase('#__content', 'title, images, alias', 'state = 1', 0, NULL);
             // Also parse the images String.
             for ($j = 0; $j < count($categoryData); $j++) {
                 $categoryData[$j] += array('image_fulltext' => modNavSliderHelper::parseImageString('image_fulltext', $categoryData[$j]['images']));
                 $categoryData[$j] += array('image_intro' => modNavSliderHelper::parseImageString('image_intro', $categoryData[$j]['images']));
             }
             // Put that into resulting array.
-            $result['articles' . $i] = $categoryData;            
+            $result['articles0'] = $categoryData;  
+            $result['numberOfCategories'] = 1;
+        } else {
+            // Get children categories.        
+            $ids = array();
+            $ids[0] = $categoryId;
+            $ids = modNavSliderHelper::getChildrenCategoryIds($ids[0], $ids);
+            $result['numberOfCategories'] = count($ids);
+            // Go through all IDs.
+            for ($i = 0; $i < count($ids); $i++) {
+                // Get article info from database.
+                $categoryData = $categoryData = modNavSliderHelper::queryDatabase('#__content', 'title, images, alias', 'state = 1 AND catid = ' . $ids[$i], 0, NULL);
+                // Also parse the images String.
+                for ($j = 0; $j < count($categoryData); $j++) {
+                    $categoryData[$j] += array('image_fulltext' => modNavSliderHelper::parseImageString('image_fulltext', $categoryData[$j]['images']));
+                    $categoryData[$j] += array('image_intro' => modNavSliderHelper::parseImageString('image_intro', $categoryData[$j]['images']));
+                }
+                // Put that into resulting array.
+                $result['articles' . $i] = $categoryData;            
+            }
         }
+                
         return json_encode($result);
     }
     
+    /**
+    * Looks up all child categories for category with $id, 
+    * appends them to $ids array and recursively looks up
+    * their children, too.
+    */
     public static function getChildrenCategoryIds($id, $ids) {
         jimport('joomla.application.categories');        
         $children = JCategories::getInstance('Content')->get($id)->getChildren();        
@@ -58,9 +84,11 @@ class modNavSliderHelper {
         }
         return $ids;
     }
-    
-    // Image attributes of articles are saved in one long String in the 
-    // Joomla database - this function parses needed parameters out of it.
+        
+    /**
+    * Image attributes of articles are saved in one long String in the 
+    * Joomla database - this function parses needed parameters out of it.
+    */
     private static function parseImageString($parameter, $images_string) {
         switch($parameter) {
             // Full image.

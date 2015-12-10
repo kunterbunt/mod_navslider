@@ -38,27 +38,27 @@ function navsliderOnCategorySelected(categorySelector) {
     jQuery.ajax({
         type   : 'POST',
         data   : request,
-        success: function (response) {                      
+        success: function (response) {                  
             var result = JSON.parse(response);              
             var baseUrl = result['url'];
-            var numberOfArticles = result['numberOfArticles'];
-            if (numberOfArticles == 0) {
-                jQuery("#navslider-articles").append("<p id='navslider-no-articles-msg' >Nothing to show.</p>");     
-            } else {
-                for (var j = 0; j < numberOfArticles; j++) {
-                    for (var i = 0; i < result['articles' + j].length; i++) {  
-                        var title = result['articles' + j][i]['title'];
-                        var alias = result['articles' + j][i]['alias'];                
-                        var image_intro = result['articles' + j][i]['image_intro'];   
-                        if (image_intro == "")
-                            image_intro = "modules/mod_navslider/imgs/no_image.png"
-                        
-                        // Conststruct new tiles.                
-                       jQuery("#navslider-articles").append(
-                           "<a href='" + baseUrl + alias + "' class='slide'><figure><img alt='intro image' src='" + image_intro + "'></figure><span class='title'>" + title + "</span></a>");
-                    }
-                }  
-            }
+            var numberOfCategories = result['numberOfCategories'];
+            var itemsAdded = 0;
+            for (var j = 0; j < numberOfCategories; j++) {
+                for (var i = 0; i < result['articles' + j].length; i++) {  
+                    itemsAdded++;
+                    var title = result['articles' + j][i]['title'];
+                    var alias = result['articles' + j][i]['alias'];                
+                    var image_intro = result['articles' + j][i]['image_intro'];   
+                    if (image_intro == "")
+                        image_intro = "modules/mod_navslider/imgs/no_image.png"
+
+                    // Conststruct new tiles.                
+                   jQuery("#navslider-articles").append(
+                       "<a href='" + baseUrl + alias + "' class='slide'><figure><img alt='intro image' src='" + image_intro + "'></figure><span class='title'>" + title + "</span></a>");
+                }
+            }              
+            if (itemsAdded == 0)
+                jQuery("#navslider-articles").append("<p id='navslider-no-articles-msg' >Nothing to show.</p>");
             jQuery(".navslider-showbox").addClass("hide");
         },
         error  : function (response) {
