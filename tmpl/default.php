@@ -7,7 +7,6 @@ defined('_JEXEC') or die;
     <div id='navslider-control'>
         <p>Category</p>
         <select id='navslider-category-selector' onchange="navsliderOnCategorySelected(this)">
-            <option value='-1'>All</option>
             <?php
             for ($i = 0; $i < count($categories); $i++) {                  
                 echo "<option value=" . $categories[$i]['id'] . ">" . $categories[$i]['title'] . "</option>";

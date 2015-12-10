@@ -36,33 +36,33 @@ class modNavSliderHelper {
          // -1 represents all categories - fetch all articles in that case.
         if ($categoryId == -1) {
             // Get article info from database.
-            $categoryData = $categoryData = modNavSliderHelper::queryDatabase('#__content', 'title, images, alias', 'state = 1', 0, NULL);
+            $categoryData = $categoryData = modNavSliderHelper::queryDatabase('#__content', 'title, images, alias', 'state = 1', 0, 'publish_up DESC');
             // Also parse the images String.
             for ($j = 0; $j < count($categoryData); $j++) {
                 $categoryData[$j] += array('image_fulltext' => modNavSliderHelper::parseImageString('image_fulltext', $categoryData[$j]['images']));
                 $categoryData[$j] += array('image_intro' => modNavSliderHelper::parseImageString('image_intro', $categoryData[$j]['images']));
             }
             // Put that into resulting array.
-            $result['articles0'] = $categoryData;  
-            $result['numberOfCategories'] = 1;
+            $result['articles'] = $categoryData;              
         } else {
             // Get children categories.        
             $ids = array();
             $ids[0] = $categoryId;
-            $ids = modNavSliderHelper::getChildrenCategoryIds($ids[0], $ids);
-            $result['numberOfCategories'] = count($ids);
+            $ids = modNavSliderHelper::getChildrenCategoryIds($ids[0], $ids);            
             // Go through all IDs.
-            for ($i = 0; $i < count($ids); $i++) {
-                // Get article info from database.
-                $categoryData = $categoryData = modNavSliderHelper::queryDatabase('#__content', 'title, images, alias', 'state = 1 AND catid = ' . $ids[$i], 0, NULL);
-                // Also parse the images String.
-                for ($j = 0; $j < count($categoryData); $j++) {
-                    $categoryData[$j] += array('image_fulltext' => modNavSliderHelper::parseImageString('image_fulltext', $categoryData[$j]['images']));
-                    $categoryData[$j] += array('image_intro' => modNavSliderHelper::parseImageString('image_intro', $categoryData[$j]['images']));
-                }
-                // Put that into resulting array.
-                $result['articles' . $i] = $categoryData;            
+            // Concatenate IDs into select string.
+            $select_ids = "catid = " . $ids[0];
+            for ($i = 1; $i < count($ids); $i++)
+                $select_ids .= " OR catid = " . $ids[$i];            
+            // Get article info from database.
+            $categoryData = modNavSliderHelper::queryDatabase('#__content', 'title, images, alias, publish_up', 'state = 1 AND ' . $select_ids, 0, 'publish_up DESC');
+            // Also parse the images String.
+            for ($j = 0; $j < count($categoryData); $j++) {
+                $categoryData[$j] += array('image_fulltext' => modNavSliderHelper::parseImageString('image_fulltext', $categoryData[$j]['images']));
+                $categoryData[$j] += array('image_intro' => modNavSliderHelper::parseImageString('image_intro', $categoryData[$j]['images']));
             }
+            // Put that into resulting array.
+            $result['articles'] = $categoryData;            
         }
                 
         return json_encode($result);
