@@ -38,17 +38,26 @@ function navsliderOnCategorySelected(categorySelector) {
     jQuery.ajax({
         type   : 'POST',
         data   : request,
-        success: function (response) {                          
-            var result = JSON.parse(response);            
+        success: function (response) {                      
+            var result = JSON.parse(response);              
             var baseUrl = result['url'];
-            for (var i = 0; i < result['articles'].length; i++) {  
-                var title = result['articles'][i]['title'];
-                var alias = result['articles'][i]['alias'];                
-                var image_intro = result['articles'][i]['image_intro'];        
-                // Conststruct new tiles.                
-               jQuery("#navslider-articles").append(
-                   "<a href='" + baseUrl + alias + "' class='slide'><figure><img alt='intro image' src='" + image_intro + "'></figure><span class='title'>" + title + "</span></a>");
-            
+            var numberOfArticles = result['numberOfArticles'];
+            if (numberOfArticles == 0) {
+                jQuery("#navslider-articles").append("<p id='navslider-no-articles-msg' >Nothing to show.</p>");     
+            } else {
+                for (var j = 0; j < numberOfArticles; j++) {
+                    for (var i = 0; i < result['articles' + j].length; i++) {  
+                        var title = result['articles' + j][i]['title'];
+                        var alias = result['articles' + j][i]['alias'];                
+                        var image_intro = result['articles' + j][i]['image_intro'];   
+                        if (image_intro == "")
+                            image_intro = "modules/mod_navslider/imgs/no_image.png"
+                        
+                        // Conststruct new tiles.                
+                       jQuery("#navslider-articles").append(
+                           "<a href='" + baseUrl + alias + "' class='slide'><figure><img alt='intro image' src='" + image_intro + "'></figure><span class='title'>" + title + "</span></a>");
+                    }
+                }  
             }
             jQuery(".navslider-showbox").addClass("hide");
         },

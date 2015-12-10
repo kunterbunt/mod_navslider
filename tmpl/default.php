@@ -27,6 +27,7 @@ defined('_JEXEC') or die;
               </div>
             </div>
             <div id='navslider-articles'>
+                <p id='navslider-no-articles-msg' class='hide'>Nothing to show.</p>
                 <?php 
                 // Create slide for every article.
                 for ($i = 0; $i < count($articles); $i++) {

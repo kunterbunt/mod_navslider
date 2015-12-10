@@ -4,7 +4,7 @@
 @small-desktop: ~"only screen and (min-width: 992px) and (max-width: 1199px)";
 @large-desktop: ~"only screen and (min-width: 1200px)";
 @background-color: #212121;
-@highlight-color: #009A6A;
+@highlight-color: #999;
 @gunmetal-gray: #292E37;
 @tile-width: 300px;
 @tile-height: 300px;
@@ -15,6 +15,7 @@
     width: 100%;
     height: @slider-height;    
     overflow: hidden;
+    background-color: white;
 }
 #navslider-outer {        
     overflow-x: hidden;
@@ -91,6 +92,18 @@
     padding: 0;
     background-color: #eee;
 }
+    #navslider-no-articles-msg {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        line-height: @tile-height;
+        text-align: center;
+        font-size: 4rem;
+        color: #999;
+    }
+    #navslider-no-articles-msg:hover {
+        cursor: default;
+    }
     #navslider-control p, select {
         background: #eee;
         border-radius: 3px;

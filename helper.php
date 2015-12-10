@@ -17,21 +17,46 @@ class modNavSliderHelper {
         return $db->loadAssocList();    
     }
     
-    public static function updateSliderAjax() {
+    public static function updateSliderAjax() {        
         $input = JFactory::getApplication()->input;
 		$categoryId  = $input->get('data');
-        if ($categoryId > -1)
-            $categoryData = modNavSliderHelper::queryDatabase('#__content', 'title, images, alias', 'state = 1 AND catid = ' . $categoryId, 0, NULL);
-        else
-            $categoryData = modNavSliderHelper::queryDatabase('#__content', 'title, images, alias', 'state = 1', 0, NULL);
-        for ($i = 0; $i < count($categoryData); $i++) {
-            $categoryData[$i] += array('image_fulltext' => modNavSliderHelper::parseImageString('image_fulltext', $categoryData[$i]['images']));
-            $categoryData[$i] += array('image_intro' => modNavSliderHelper::parseImageString('image_intro', $categoryData[$i]['images']));
-        }
-        $result = array();
-        $result['articles'] = $categoryData;
+        
+        // Get children categories.
+        $id = $categoryId;
+        $ids = array();
+        $ids[0] = $categoryId;
+        $ids = modNavSliderHelper::getChildrenCategoryIds($ids[0], $ids);
+        
+        // Prepare answer array.
+        $result = array();        
         $result['url'] = JURI::root();
+        $result['numberOfArticles'] = count($ids);
+        
+        // Go through all IDs.
+        for ($i = 0; $i < count($ids); $i++) {
+            // Get article info from database.
+            $categoryData = $categoryData = modNavSliderHelper::queryDatabase('#__content', 'title, images, alias', 'state = 1 AND catid = ' . $ids[$i], 0, NULL);
+            // Also parse the images String.
+            for ($j = 0; $j < count($categoryData); $j++) {
+                $categoryData[$j] += array('image_fulltext' => modNavSliderHelper::parseImageString('image_fulltext', $categoryData[$j]['images']));
+                $categoryData[$j] += array('image_intro' => modNavSliderHelper::parseImageString('image_intro', $categoryData[$j]['images']));
+            }
+            // Put that into resulting array.
+            $result['articles' . $i] = $categoryData;            
+        }
         return json_encode($result);
+    }
+    
+    public static function getChildrenCategoryIds($id, $ids) {
+        jimport('joomla.application.categories');        
+        $children = JCategories::getInstance('Content')->get($id)->getChildren();        
+        for ($i = 0; $i < count($children); $i++) {
+            // Append to array.
+            $ids[count($ids)] = $children[$i]->get('id');
+            // Recursively add their children, too.
+            $ids = modNavSliderHelper::getChildrenCategoryIds($ids[count($ids) - 1], $ids);
+        }
+        return $ids;
     }
     
     // Image attributes of articles are saved in one long String in the 
