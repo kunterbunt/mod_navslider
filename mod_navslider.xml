@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="module" version="3.1.0" client="site" method="upgrade">
-    <name>Navigation Slider</name>
+<extension type="module" version="3.4.8" client="site" method="upgrade">
+    <name>NavigationSlider</name>
     <author>kunterbunt</author>
     <version>1.0.0</version>
     <description>A navigation module that allows horizontal swipe-based scrolling of filtered articles.</description>
+    <scriptfile>script.php</scriptfile>
     <files>
         <filename>mod_navslider.xml</filename>
         <filename module="mod_navslider">mod_navslider.php</filename>
@@ -12,7 +13,7 @@
         <folder>tmpl</filename>
         <folder>imgs</folder>
         <folder>js</folder>
-        <folder>css</folder>
+        <folder>css</folder>        
     </files>
     <config>
     </config>
