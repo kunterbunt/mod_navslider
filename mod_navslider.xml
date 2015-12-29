@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" version="3.4.8" client="site" method="upgrade">
-    <name>NavigationSlider</name>
+    <name>Navigation Slider</name>
     <author>kunterbunt</author>
     <version>1.0.0</version>
-    <description>A navigation module that allows horizontal swipe-based scrolling of filtered articles.</description>
-    <scriptfile>script.php</scriptfile>
+    <description>A navigation module that allows horizontal swipe-based scrolling of filtered articles.test</description>    
     <files>
         <filename>mod_navslider.xml</filename>
         <filename module="mod_navslider">mod_navslider.php</filename>
