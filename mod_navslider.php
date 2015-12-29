@@ -10,6 +10,8 @@ $articles = modNavSliderHelper::queryDatabase('#__content', 'title, images, alia
 // Fetch categories from database.
 $categories = modNavSliderHelper::getCategories();
 
+$tags = modNavSliderHelper::getTags();
+
 // Load CSS & JS.
 $document = JFactory::getDocument();
 $document->addStyleSheet(JURI::base() . 'modules/'.$module->module . "/css/mod_navslider.css");

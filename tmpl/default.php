@@ -4,18 +4,52 @@ defined('_JEXEC') or die;
 ?>
 
 <div id='navslider-container'>
-    <div id='navslider-control'>
-        <p>Category</p>
-        <select id='navslider-category-selector' onchange="navsliderOnCategorySelected(this)">
-            <?php            
-            for ($i = 0; $i < count($categories); $i++) {                  
-                echo "<option value=" . $categories[$i]['id'] . ">" . $categories[$i]['title'] . "</option>";
-            }
+    <div id='navslider-control-bar'>        
+        <div id='navslider-control-bar-categories'>
+            <p>Category</p>
+            <select onchange="navsliderOnCategorySelected(this)">
+                <?php            
+                for ($i = 0; $i < count($categories); $i++) {                  
+                    echo "<option value=" . $categories[$i]['id'] . ">" . $categories[$i]['title'] . "</option>";
+                }
+                    ?>
+            </select> 
+            <img alt='right-arrow' src="<?php echo JURI::root() . 'modules/' . $module->module?>/imgs/right_arrow.png" />
+            <p>Tags</p>
+        </div>        
+        <div id='navslider-control-bar-tags'>            
+            <?php
+                for ($i = 0; $i < count($tags); $i++)
+                    echo "<p>" . $tags[$i]['title'] . "</p>";
             ?>
-        </select>        
-        <img alt='right-arrow' src="<?php echo JURI::root() . 'modules/' . $module->module?>/imgs/right_arrow.png" />
-        <p>Tags</p>
+        </div>
     </div>
+<!--
+    <div id='navslider-control'>
+        <div id='navslider-control-container'>
+            <div id='navslider-control-categories'>
+                <p>Category</p>
+                <select id='navslider-category-selector' onchange="navsliderOnCategorySelected(this)">
+                    <?php            
+                    for ($i = 0; $i < count($categories); $i++) {                  
+                        echo "<option value=" . $categories[$i]['id'] . ">" . $categories[$i]['title'] . "</option>";
+                    }
+                    ?>
+                </select>        
+                <img alt='right-arrow' src="<?php echo JURI::root() . 'modules/' . $module->module?>/imgs/right_arrow.png" />
+                <p>Tags</p>  
+            </div>
+            <div id='navslider-control-tags'>                
+                <div id='navslider-tags'>                      
+                    <?php
+                        for ($i = 0; $i < count($tags); $i++)
+                            echo "<p>" . $tags[$i]['title'] . "</p>";
+                    ?>
+                </div>
+            </div>
+        </div>
+    </div>
+-->
     <div id='navslider-outer'>
         <div id='navslider'>
             <div class="navslider-showbox hide">

@@ -2,9 +2,10 @@ var isMobile = false;
 
 jQuery(document).ready(function() {  
     // Try to evaluate whether the user is on a mobile device.
-     checkIfUserOnMobile();  
-    if (isMobile) {
-        var slider = new IScroll('#navslider-outer', { 
+    checkIfUserOnMobile(); 
+    var tileSlider; 
+    if (isMobile) { 
+        tileSlider = new IScroll('#navslider-outer', { 
             scrollX: true, 
             scrollY: false, 
             mouseWheel: false,
@@ -13,7 +14,7 @@ jQuery(document).ready(function() {
         });   
     // No eventPassthrough for desktop device as that forces you to click twice to be able to scroll.
     } else {
-        var slider = new IScroll('#navslider-outer', { 
+        tileSlider = new IScroll('#navslider-outer', { 
             scrollX: true, 
             scrollY: false, 
             snap: 'a',        

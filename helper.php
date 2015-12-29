@@ -33,17 +33,20 @@ class modNavSliderHelper {
         for ($i = 0; $i < count($categoriesFromDb); $i++) {
             if ($categoriesFromDb[$i]['title'] !== "Uncategorised" && $categoriesFromDb[$i]['title'] !== "ROOT") {        
                 $categories[] = array('title' => $categoriesFromDb[$i]['title'], 'id' => $categoriesFromDb[$i]['id']);
+                // Recursively add children categories.
                 $categories = modNavSliderHelper::getChildrenCategoryStrings($categoriesFromDb[$i]['id'], $categories, 1);
-//                $children = JCategories::getInstance('Content')->get($categoriesFromDb[$i]['id'])->getChildren();
-//                for ($j = 0; $j < count($children); $j++) {
-//                    $categories[] = array('title' => str_repeat('&nbsp;', 1) . $children[$j]->get('title'), 'id' => $children[$j]->get('id'));
-//                }
             }  
         }
         return $categories;
     }
     
-    
+    /**
+     * Fetches all tags from the database.
+     */
+    public static function getTags() {        
+        $tags = modNavSliderHelper::queryDatabase('#__tags', 'title, id', NULL, 0, 'title ASC');
+        return $tags;
+    }
     
     /**
     * Loads article information for the category (and sub-categories)
