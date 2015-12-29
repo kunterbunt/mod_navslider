@@ -3,16 +3,24 @@
     <name>Navigation Slider</name>
     <author>kunterbunt</author>
     <version>1.0.0</version>
-    <description>A navigation module that allows horizontal swipe-based scrolling of filtered articles.test</description>    
+    <description>A navigation module that allows horizontal swipe-based scrolling of filtered content.</description>
+    <creationDate>December 29, 2015</creationDate>
     <files>
         <filename>mod_navslider.xml</filename>
         <filename module="mod_navslider">mod_navslider.php</filename>
         <filename>index.html</filename>
-        <filename>helper.php</filename>        
-        <folder>tmpl</filename>
-        <folder>imgs</folder>
-        <folder>js</folder>
-        <folder>css</folder>        
+        <filename>helper.php</filename>               
+        <filename>tmpl/default.php</filename>
+        <filename>tmpl/index.html</filename>
+        <filename>imgs/ajax-loader.gif</filename>
+        <filename>imgs/index.html</filename>
+        <filename>imgs/loader.GIF</filename>
+        <filename>imgs/no_image.png</filename>
+        <filename>imgs/right_arrow.png</filename>
+        <filename>css/mod_navslider.css</filename>
+        <filename>css/mod_navslider.less</filename>
+        <filename>js/iscroll.js</filename>
+        <filename>js/mod_navslider.js</filename>
     </files>
     <config>
     </config>
