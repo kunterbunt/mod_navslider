@@ -45,6 +45,12 @@ class modNavSliderHelper {
      */
     public static function getTags() {        
         $tags = modNavSliderHelper::queryDatabase('#__tags', 'title, id', NULL, 0, 'title ASC');
+        for ($i = 0; $i < count($tags); $i++) {                        
+            if ($tags[$i]['title'] == "ROOT") {
+                unset($tags[$i]);                
+            }                
+        }
+        $tags = array_values($tags);
         return $tags;
     }
     
@@ -64,7 +70,7 @@ class modNavSliderHelper {
          // -1 represents all categories - fetch all articles in that case.
         if ($categoryId == -1) {
             // Get article info from database.
-            $categoryData = $categoryData = modNavSliderHelper::queryDatabase('#__content', 'title, images, alias', 'state = 1', 0, 'publish_up DESC');
+            $categoryData = modNavSliderHelper::queryDatabase('#__content', 'title, images, alias', 'state = 1', 0, 'publish_up DESC');
             // Also parse the images String.
             for ($j = 0; $j < count($categoryData); $j++) {
                 $categoryData[$j] += array('image_fulltext' => modNavSliderHelper::parseImageString('image_fulltext', $categoryData[$j]['images']));

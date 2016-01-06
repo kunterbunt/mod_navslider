@@ -7,9 +7,8 @@ require_once dirname(__FILE__) . '/helper.php';
 // Fetch articles from database.
 $articles = modNavSliderHelper::queryDatabase('#__content', 'title, images, alias', 'state = 1', 0, 'publish_up DESC');
 
-// Fetch categories from database.
+// Fetch categories & tags from database.
 $categories = modNavSliderHelper::getCategories();
-
 $tags = modNavSliderHelper::getTags();
 
 // Load CSS & JS.
