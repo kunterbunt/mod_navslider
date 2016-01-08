@@ -59,25 +59,25 @@ class modNavSliderHelper {
     * that the user selected in the slider and returns that to the calling
     * AJAX function.
     */
-    public static function updateSliderAjax() {        
+    public static function updateSliderAjax() {
         $input = JFactory::getApplication()->input;
 		$categoryId  = $input->get('data');                               
         
         // Prepare answer array.
         $result = array();        
-        $result['url'] = JURI::root();        
-        
+        $result['url'] = JURI::root();    
+                
          // -1 represents all categories - fetch all articles in that case.
         if ($categoryId == -1) {
             // Get article info from database.
-            $categoryData = modNavSliderHelper::queryDatabase('#__content', 'title, images, alias', 'state = 1', 0, 'publish_up DESC');
+            $categoryData = modNavSliderHelper::queryDatabase('#__content', 'title, images, alias, id', 'state = 1', 0, 'publish_up DESC');
             // Also parse the images String.
             for ($j = 0; $j < count($categoryData); $j++) {
                 $categoryData[$j] += array('image_fulltext' => modNavSliderHelper::parseImageString('image_fulltext', $categoryData[$j]['images']));
                 $categoryData[$j] += array('image_intro' => modNavSliderHelper::parseImageString('image_intro', $categoryData[$j]['images']));
-            }
-            // Put that into resulting array.
-            $result['articles'] = $categoryData;              
+            } 
+            
+        // Otherwise we have a category id.
         } else {
             // Get children categories.        
             $ids = array();
@@ -89,15 +89,28 @@ class modNavSliderHelper {
             for ($i = 1; $i < count($ids); $i++)
                 $select_ids .= " OR catid = " . $ids[$i];            
             // Get article info from database.
-            $categoryData = modNavSliderHelper::queryDatabase('#__content', 'title, images, alias, publish_up', 'state = 1 AND ' . $select_ids, 0, 'publish_up DESC');
+            $categoryData = modNavSliderHelper::queryDatabase('#__content', 'title, images, alias, publish_up, id', 'state = 1 AND ' . $select_ids, 0, 'publish_up DESC');
             // Also parse the images String.
             for ($j = 0; $j < count($categoryData); $j++) {
                 $categoryData[$j] += array('image_fulltext' => modNavSliderHelper::parseImageString('image_fulltext', $categoryData[$j]['images']));
-                $categoryData[$j] += array('image_intro' => modNavSliderHelper::parseImageString('image_intro', $categoryData[$j]['images']));
-            }
-            // Put that into resulting array.
-            $result['articles'] = $categoryData;            
+                $categoryData[$j] += array('image_intro' => modNavSliderHelper::parseImageString('image_intro', $categoryData[$j]['images']));                
+            }                                                                                   
         }
+        
+        // Retrieve tags for articles.            
+        for ($i = 0; $i < count($categoryData); $i++) {
+            $tags = new JHelperTags;
+            $tags->getItemTags('com_content.article', $categoryData[$i]['id']);           
+            $itemTags = $tags->itemTags;                
+            // itemTags contains all info on the tags - filter out what we need.
+            $strippedTags = array();                
+            for ($j = 0; $j < count($itemTags); $j++) {
+                $strippedTags[] = array('title' => $itemTags[$j]->title,
+                                        'id' => $itemTags[$j]->id);
+            }                    
+            $categoryData[$i] += array('tags' => $strippedTags);
+        }   
+        $result['articles'] = $categoryData;  
                 
         return json_encode($result);
     }

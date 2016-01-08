@@ -1,9 +1,20 @@
 var isMobile = false;
+var tiles = [];
+var selectedTags = [];
+var baseUrl;
+var tileSlider;
 
 jQuery(document).ready(function() {  
     // Try to evaluate whether the user is on a mobile device.
-    checkIfUserOnMobile(); 
-    var tileSlider; 
+    checkIfUserOnMobile();     
+    
+    // Set onchange function for selection box and call it now to load it for the first time.
+    jQuery("#navslider-control-bar-select").bind("change", function() {
+        navsliderOnCategorySelected(document.getElementById('navslider-control-bar-select'));
+    }).change();
+});
+
+function assignIScroll() {
     if (isMobile) { 
         tileSlider = new IScroll('#navslider-outer', { 
             scrollX: true, 
@@ -21,12 +32,37 @@ jQuery(document).ready(function() {
             mouseWheel: false            
         }); 
     }        
-        
-});
+}
 
+/**
+ * Keeps track of which tags have been selected by the user by adding or removing it in selectedTags array.
+ * @param {integer} tag ID of selected tag
+ */
+function onTagClicked(tag) {    
+    var id = tag.dataset.id;
+    var index = selectedTags.indexOf(id);
+    if (index == -1)
+        selectedTags.push(id);
+    else
+        selectedTags.splice(index, 1);        
+    tag = jQuery(tag);
+    if (tag.hasClass('selected'))
+        tag.removeClass('selected');
+    else
+        tag.addClass('selected');
+    updateSlider();
+}
+
+/**
+ * When the user has selected a category this fires an AJAX call to the server.
+ * Upon recieving the JSON-formatted result it parses all article data and updates the tiles array. Finally it calls updateSlider().
+ * @param {integer} categorySelector 
+ */
 function navsliderOnCategorySelected(categorySelector) {    
     var selectedValue = categorySelector.value;
+    // Show loader.
     jQuery(".navslider-showbox").removeClass("hide");
+    // Empty slider.
     jQuery("#navslider-articles").empty();
     var request = {
         'option' : 'com_ajax',
@@ -39,30 +75,81 @@ function navsliderOnCategorySelected(categorySelector) {
     jQuery.ajax({
         type   : 'POST',
         data   : request,
-        success: function (response) {                  
-            var result = JSON.parse(response);                 
-            var baseUrl = result['url'];            
+        success: function (response) {              
+            var result = JSON.parse(response);                               
+            baseUrl = result['url'];            
             var itemsAdded = 0;            
+            tiles = [];       
             for (var i = 0; i < result['articles'].length; i++) {  
-                itemsAdded++;
+                itemsAdded++;          
+                // Fetch primitive data.
                 var title = result['articles'][i]['title'];
-                var alias = result['articles'][i]['alias'];                
-                var image_intro = result['articles'][i]['image_intro'];   
+                
+                var alias = result['articles'][i]['alias'];   
+                
+                var image_intro = result['articles'][i]['image_intro'];                   
                 if (image_intro == "")
-                    image_intro = "modules/mod_navslider/imgs/no_image.png"
-
-                // Construct new tiles.                
-               jQuery("#navslider-articles").append(
-                   "<a href='" + baseUrl + alias + "' class='slide'><figure><img alt='intro image' src='" + image_intro + "'></figure><span class='title'>" + title + "</span></a>");
-            }             
-            if (itemsAdded == 0)
-                jQuery("#navslider-articles").append("<p id='navslider-no-articles-msg' >Nothing to show.</p>");
-            jQuery(".navslider-showbox").addClass("hide");
+                    image_intro = "modules/mod_navslider/imgs/no_image.png"  
+                    
+                var tags = [];
+                for (var j = 0; j < result['articles'][i]['tags'].length; j++) {
+                    tags.push({title: result['articles'][i]['tags'][j]['title'], 
+                              id: result['articles'][i]['tags'][j]['id']});
+                }            
+                
+                // Combine into object.
+                var tile = {
+                    title: title,
+                    alias: alias,
+                    image_intro: image_intro,
+                    tags: tags
+                };
+                
+                // Append to collection.
+                tiles.push(tile);                                       
+            }
+            // Show tiles.
+           updateSlider();
         },
         error  : function (response) {
             alert(response.responseText);
         }
     });
+}
+
+/**
+ * Fills the slider with articles that match the current filter rules. 
+ */
+function updateSlider() {  
+    jQuery("#navslider-articles").empty();
+    var numberOfTilesAdded = 0;
+    for (var i = 0; i < tiles.length; i++) {
+        // If tags are selected then filter out those articles that don't match.
+        filteredOut = false;
+        if (selectedTags.length > 0) {                     
+            // If one selected tag matches the article tags then show the article.
+            filteredOut = true;
+            for (var j = 0; j < tiles[i]['tags'].length; j++) {
+                var tag = tiles[i]['tags'][j]['id'];
+                if (selectedTags.indexOf(tag) > -1) {
+                    filteredOut = false;
+                    break;
+                }
+            }
+        }
+        if (!filteredOut) {                    
+            jQuery("#navslider-articles").append(
+                   "<a href='" + baseUrl + tiles[i]['alias'] + "' class='slide'><figure><img alt='intro image' src='" + tiles[i]['image_intro'] + "'></figure><span class='title'>" + tiles[i]['title'] + "</span></a>");
+            numberOfTilesAdded++;
+        }                
+    }            
+        
+    if (numberOfTilesAdded == 0)
+        jQuery("#navslider-articles").append("<p id='navslider-no-articles-msg' >Nothing to show.</p>");
+    
+    // Hide loader.
+    jQuery(".navslider-showbox").addClass("hide");
+    assignIScroll();
 }
 
 function checkIfUserOnMobile() {
