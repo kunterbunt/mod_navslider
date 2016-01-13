@@ -139,8 +139,6 @@
 }
 #navslider-control-bar-tags > p:hover {
   cursor: pointer;
-  color: white;
-  background-color: #ccc;
 }
 #navslider-control-bar-tags > p.selected {
   color: white;
