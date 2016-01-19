@@ -15,7 +15,15 @@ jQuery(document).ready(function() {
     }).change();
   
   jQuery(".navslider-enlarge_button").click(function() {
-    jQuery(this).toggleClass("down");    
+    jQuery(this).toggleClass("down");   
+    jQuery("#navslider-outer").toggleClass("navslider-enlarged");
+    jQuery("#navslider-outer").toggleClass("navslider-compact");
+  });
+  
+  jQuery(".navslider-text_tags").click(function() {
+    for (var i = 0, j = tiles.length; i < j; i++)
+      tiles.push(tiles[i]);    
+    updateSlider();
   });
 });
 
@@ -34,7 +42,8 @@ function assignIScroll() {
             scrollX: true, 
             scrollY: false, 
             snap: 'a',        
-            mouseWheel: false            
+            mouseWheel: false,
+            eventPassthrough: false
         }); 
     }        
 }
