@@ -3,6 +3,7 @@ var tiles = [];
 var selectedTags = [];
 var baseUrl;
 var tileSlider;
+var fadeDuration = 400;
 
 jQuery(document).ready(function() {  
     // Try to evaluate whether the user is on a mobile device.
@@ -14,7 +15,7 @@ jQuery(document).ready(function() {
     }).change();
   
   jQuery(".navslider-enlarge_button").click(function() {
-    jQuery(this).toggleClass("down");
+    jQuery(this).toggleClass("down");    
   });
 });
 
@@ -50,10 +51,7 @@ function onTagClicked(tag) {
     else
         selectedTags.splice(index, 1);        
     tag = jQuery(tag);
-    if (tag.hasClass('selected'))
-        tag.removeClass('selected');
-    else
-        tag.addClass('selected');
+    tag.toggleClass("selected");
     updateSlider();
 }
 
@@ -124,9 +122,7 @@ function navsliderOnCategorySelected(categorySelector) {
 /**
  * Fills the slider with articles that match the current filter rules. 
  */
-function updateSlider() {  
-//    jQuery("#navslider-articles a").hide('slow');
-    
+function updateSlider() {      
     jQuery("#navslider-articles").empty();
     var numberOfTilesAdded = 0;
     for (var i = 0; i < tiles.length; i++) {
@@ -144,9 +140,12 @@ function updateSlider() {
             }
         }
         if (!filteredOut) {                    
-            jQuery("#navslider-articles").append(
-                   "<a href='" + baseUrl + tiles[i]['alias'] + "' class='navslider-slide'><figure><img class='navslider-slide--img' alt='intro image' src='" + tiles[i]['image_intro'] + "'></figure><span class='navslider-slide--title'>" + tiles[i]['title'] + "</span></a>");
-            numberOfTilesAdded++;
+          var tile = jQuery("<a href='" + baseUrl + tiles[i]['alias'] + "' class='navslider-slide'></a>");
+          var tile_image = jQuery("<figure><img class='navslider-slide--img' alt='intro image' src='" + tiles[i]['image_intro'] + "'></figure><span class='navslider-slide--title'>" + tiles[i]['title'] + "</span>");
+          tile_image.hide().appendTo(tile);
+          tile.appendTo(jQuery("#navslider-articles"));
+          tile_image.fadeIn(fadeDuration);
+          numberOfTilesAdded++;
         }                
     }            
         
