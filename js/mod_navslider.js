@@ -143,7 +143,7 @@ function updateSlider() {
         }
         if (!filteredOut) {                    
             jQuery("#navslider-articles").append(
-                   "<a href='" + baseUrl + tiles[i]['alias'] + "' class='slide'><figure><img alt='intro image' src='" + tiles[i]['image_intro'] + "'></figure><span class='title'>" + tiles[i]['title'] + "</span></a>");
+                   "<a href='" + baseUrl + tiles[i]['alias'] + "' class='navslider-slide'><figure><img class='navslider-slide--img' alt='intro image' src='" + tiles[i]['image_intro'] + "'></figure><span class='navslider-slide--title'>" + tiles[i]['title'] + "</span></a>");
             numberOfTilesAdded++;
         }                
     }            
