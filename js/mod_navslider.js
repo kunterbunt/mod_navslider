@@ -2,18 +2,19 @@ var isMobile = false;
 var tiles = [];
 var selectedTags = [];
 var baseUrl;
-var tileSlider;
+var tileSlider = null;
 var fadeDuration = 400;
 
 jQuery(document).ready(function() {  
-    // Try to evaluate whether the user is on a mobile device.
-    checkIfUserOnMobile();     
-    
-    // Set onchange function for selection box and call it now to load it for the first time.
-    jQuery("#navslider-control-bar-select").bind("change", function() {
-        navsliderOnCategorySelected(document.getElementById('navslider-control-bar-select'));
-    }).change();
+  // Try to evaluate whether the user is on a mobile device.
+  checkIfUserOnMobile();     
+
+  // Set onchange function for selection box and call it now to load it for the first time.
+  jQuery("#navslider-control-bar-select").bind("change", function() {
+      navsliderOnCategorySelected(document.getElementById('navslider-control-bar-select'));
+  }).change();
   
+  // Enlarge button functions.
   jQuery(".navslider-enlarge_button").click(function() {
     jQuery(this).toggleClass("down");   
     var navslider_outer = jQuery("#navslider-outer");
@@ -25,6 +26,7 @@ jQuery(document).ready(function() {
       tileSlider.destroy();
   });
   
+  // Add articles for test purposes.
   jQuery(".navslider-text_tags").click(function() {
     for (var i = 0, j = tiles.length; i < j; i++)
       tiles.push(tiles[i]);    
@@ -33,24 +35,34 @@ jQuery(document).ready(function() {
 });
 
 function assignIScroll() {
-    if (isMobile) { 
-        tileSlider = new IScroll('#navslider-outer', { 
-            scrollX: true, 
-            scrollY: false, 
-            mouseWheel: false,
-            snap: 'a',        
-            eventPassthrough: true
-        });   
-    // No eventPassthrough for desktop device as that forces you to click twice to be able to scroll.
-    } else {
-        tileSlider = new IScroll('#navslider-outer', { 
-            scrollX: true, 
-            scrollY: false, 
-            snap: 'a',        
-            mouseWheel: false,
-            eventPassthrough: false
-        }); 
-    }        
+  if (tileSlider != null)
+    tileSlider.destroy();
+  if (isMobile) { 
+      tileSlider = new IScroll('#navslider-outer', { 
+        scrollX: true, 
+        scrollY: false, 
+        mouseWheel: false,
+        snap: 'a',        
+        eventPassthrough: true
+      });   
+  // No eventPassthrough for desktop device as that forces you to click twice to be able to scroll.
+  } else {
+      tileSlider = new IScroll('#navslider-outer', { 
+        scrollX: true, 
+        scrollY: false, 
+        snap: 'a',        
+        mouseWheel: false,
+        eventPassthrough: false        
+      }); 
+  }        
+  // Prevent clicking links while scrolling.
+  tileSlider.on('scrollStart', function() {
+    jQuery("a.navslider-slide").addClass("navslider-disabled");
+  });
+  tileSlider.on('scrollEnd', function() {
+    jQuery("a.navslider-slide").removeClass("navslider-disabled");
+  });
+  
 }
 
 /**
