@@ -22,7 +22,7 @@ jQuery(document).ready(function() {
     navslider_outer.toggleClass("navslider-compact");
     if (navslider_outer.hasClass("navslider-compact"))
       assignIScroll();
-    else
+    else if (tileSlider != null)
       tileSlider.destroy();
   });
   
