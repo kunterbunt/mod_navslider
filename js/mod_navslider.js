@@ -12,6 +12,10 @@ jQuery(document).ready(function() {
     jQuery("#navslider-control-bar-select").bind("change", function() {
         navsliderOnCategorySelected(document.getElementById('navslider-control-bar-select'));
     }).change();
+  
+  jQuery(".navslider-enlarge_button").click(function() {
+    jQuery(this).toggleClass("down");
+  });
 });
 
 function assignIScroll() {

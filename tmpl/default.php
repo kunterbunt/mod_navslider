@@ -4,9 +4,9 @@ defined('_JEXEC') or die;
 ?>
 
 <div id='navslider-container'>
-    <div id='navslider-control-bar'>        
+    <div id='navslider-control-bar' class='navslider-shadow--bottom'>     
         <div id='navslider-control-bar-categories'>
-            <p>Category</p>
+            <p class="navslider-text_category">Category</p>
             <select id='navslider-control-bar-select'>
                 <?php            
                 for ($i = 0; $i < count($categories); $i++) {                  
@@ -14,8 +14,8 @@ defined('_JEXEC') or die;
                 }
                     ?>
             </select> 
-            <img alt='right-arrow' src="<?php echo JURI::root() . 'modules/' . $module->module?>/imgs/right_arrow.png" />
-            <p>Tags</p>
+            <img alt='Enlarge Button' src="<?php echo JURI::root() . 'modules/' . $module->module?>/imgs/right_arrow.png" class="navslider-enlarge_button"/>
+            <p class="navslider-text_tags">Tags</p>
         </div>        
         <div id='navslider-control-bar-tags'>            
             <?php
