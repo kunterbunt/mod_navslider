@@ -70,7 +70,7 @@ class modNavSliderHelper {
          // -1 represents all categories - fetch all articles in that case.
         if ($categoryId == -1) {
             // Get article info from database.
-            $categoryData = modNavSliderHelper::queryDatabase('#__content', 'title, images, alias, id', 'state = 1', 0, 'publish_up DESC');
+            $categoryData = modNavSliderHelper::queryDatabase('#__content', 'title, images, alias, id, introtext', 'state = 1', 0, 'publish_up DESC');
             // Also parse the images String.
             for ($j = 0; $j < count($categoryData); $j++) {
                 $categoryData[$j] += array('image_fulltext' => modNavSliderHelper::parseImageString('image_fulltext', $categoryData[$j]['images']));

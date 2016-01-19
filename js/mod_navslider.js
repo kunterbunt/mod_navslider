@@ -92,7 +92,7 @@ function navsliderOnCategorySelected(categorySelector) {
         type   : 'POST',
         data   : request,
         success: function (response) {              
-            var result = JSON.parse(response);                               
+            var result = JSON.parse(response);                
             baseUrl = result['url'];            
             var itemsAdded = 0;            
             tiles = [];       
@@ -100,7 +100,7 @@ function navsliderOnCategorySelected(categorySelector) {
                 itemsAdded++;          
                 // Fetch primitive data.
                 var title = result['articles'][i]['title'];
-                
+                var intro_text = result['articles'][i]['introtext'];                
                 var alias = result['articles'][i]['alias'];   
                 
                 var image_intro = result['articles'][i]['image_intro'];                   
@@ -118,7 +118,8 @@ function navsliderOnCategorySelected(categorySelector) {
                     title: title,
                     alias: alias,
                     image_intro: image_intro,
-                    tags: tags
+                    tags: tags,
+                    intro_text: intro_text
                 };
                 
                 // Append to collection.
@@ -153,10 +154,25 @@ function updateSlider() {
                 }
             }
         }
-        if (!filteredOut) {                    
+        if (!filteredOut) {     
+          // Construct tile.
+          // Everything is inside the link to the article.
           var tile = jQuery("<a href='" + baseUrl + tiles[i]['alias'] + "' class='navslider-slide'></a>");
-          var tile_image = jQuery("<figure><img class='navslider-slide--img' alt='intro image' src='" + tiles[i]['image_intro'] + "'></figure><span class='navslider-slide--title'>" + tiles[i]['title'] + "</span>");
+          // Image is capsulated inside a figure, so the image's opacity can be altered for a hover effect.
+          var tile_image = jQuery("<figure><img class='navslider-slide--img' alt='intro image' src='" + tiles[i]['image_intro'] + "'></figure>");
           tile_image.hide().appendTo(tile);
+          
+          // The small title inside a span.
+          var tile_title = jQuery("<span class='navslider-slide--title'>" + tiles[i]['title'] + "</span>");
+          tile_title.appendTo(tile);
+          
+          // Title for enlarged view.
+          var tile_title_expanded = jQuery("<div class='navslider-slide--title_expanded'>" + tiles[i]['title'] + "</div>");
+          tile_title_expanded.appendTo(tile);
+          // Intro text for enlarged view.
+          var tile_introtext = jQuery("<div class='navslider-slide--introtext'>" + tiles[i]['intro_text'] + "</div>");
+          tile_introtext.appendTo(tile);
+          
           tile.appendTo(jQuery("#navslider-articles"));
           tile_image.fadeIn(fadeDuration);
           numberOfTilesAdded++;
