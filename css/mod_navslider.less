@@ -3,17 +3,15 @@
 @large-tablet: ~"only screen and (min-width: 768px) and (max-width: 991px)";
 @small-desktop: ~"only screen and (min-width: 992px) and (max-width: 1199px)";
 @large-desktop: ~"only screen and (min-width: 1200px)";
-@background-color: #e5e5e5;
-@background-color-slide: #fff;
-@gunmetal-gray: #292E37;
 @tile-width: 300px;
 @tile-height: 300px;
-@control-height: 78px;
+@control-height: 48px;
 @slider-height: calc(@tile-height + @control-height);
 
+@background-color: #e5e5e5;
+@background-color-slide: #fff;
 @highlight-color-slide: #999;
-@highlight-color: #FF5722;
-@highlight-color-dark: #D84315;
+@highlight-color: #5fc69b;
 
 #navslider-container {
     width: 100%;    
@@ -198,7 +196,7 @@
           display: inline-block;
           vertical-align: top;
           height: 2rem;
-          margin: 24px 8px 0 8px;
+          margin: calc(@control-height / 5) 8px 0 8px;
           background-color: white;
           border: 1px solid #999;
         }
