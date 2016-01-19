@@ -153,7 +153,8 @@ function updateSlider() {
     
     // Hide loader.
     jQuery(".navslider-showbox").addClass("hide");
-    assignIScroll();
+    if (numberOfTilesAdded > 0)
+      assignIScroll();
 }
 
 function checkIfUserOnMobile() {
