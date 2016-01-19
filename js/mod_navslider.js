@@ -16,8 +16,13 @@ jQuery(document).ready(function() {
   
   jQuery(".navslider-enlarge_button").click(function() {
     jQuery(this).toggleClass("down");   
-    jQuery("#navslider-outer").toggleClass("navslider-enlarged");
-    jQuery("#navslider-outer").toggleClass("navslider-compact");
+    var navslider_outer = jQuery("#navslider-outer");
+    navslider_outer.toggleClass("navslider-enlarged");
+    navslider_outer.toggleClass("navslider-compact");
+    if (navslider_outer.hasClass("navslider-compact"))
+      assignIScroll();
+    else
+      tileSlider.destroy();
   });
   
   jQuery(".navslider-text_tags").click(function() {

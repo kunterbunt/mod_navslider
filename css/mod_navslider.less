@@ -14,6 +14,11 @@
 @highlight-color: #FF5722;
 @highlight-color-dark: #D84315;
 
+* {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
 #navslider-container {
     width: 100%;    
     overflow: hidden;
@@ -54,7 +59,8 @@
       text-align: center;
     }
     #navslider-articles {
-      width: 100%;      
+      width: 100%;    
+      text-align: center;
     }
     a.navslider-slide {
       display: inline-block;
