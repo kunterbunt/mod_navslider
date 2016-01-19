@@ -125,6 +125,8 @@ function navsliderOnCategorySelected(categorySelector) {
  * Fills the slider with articles that match the current filter rules. 
  */
 function updateSlider() {  
+//    jQuery("#navslider-articles a").hide('slow');
+    
     jQuery("#navslider-articles").empty();
     var numberOfTilesAdded = 0;
     for (var i = 0; i < tiles.length; i++) {
