@@ -89,7 +89,7 @@ class modNavSliderHelper {
             for ($i = 1; $i < count($ids); $i++)
                 $select_ids .= " OR catid = " . $ids[$i];            
             // Get article info from database.
-            $categoryData = modNavSliderHelper::queryDatabase('#__content', 'title, images, alias, publish_up, id', 'state = 1 AND ' . $select_ids, 0, 'publish_up DESC');
+            $categoryData = modNavSliderHelper::queryDatabase('#__content', 'title, images, alias, publish_up, id, introtext', 'state = 1 AND ' . $select_ids, 0, 'publish_up DESC');
             // Also parse the images String.
             for ($j = 0; $j < count($categoryData); $j++) {
                 $categoryData[$j] += array('image_fulltext' => modNavSliderHelper::parseImageString('image_fulltext', $categoryData[$j]['images']));
