@@ -3,14 +3,27 @@
 defined('_JEXEC') or die; 
 ?>
 
-<div id='navslider-container'>
+<?php 
+  // Get current category id for auto-selection.
+  $app = Jfactory::getApplication();
+  $input = $app->input;
+  $catid = -1;
+  if ($input->getCmd('option') == 'com_content' && $input->getCmd('view') == 'article') {
+    $cmodel = JModelLegacy::getInstance('Article', 'ContentModel');
+    $catid = $cmodel->getItem($app->input->get('id'))->catid;      
+  }    
+?>
+
+<div id='navslider-container'>    
     <div id='navslider-control-bar' class='navslider-shadow--bottom'>     
         <div id='navslider-control-bar-categories'>
             <p class="navslider-text_category navslider-noselect">Category</p>
             <select id='navslider-control-bar-select' class="navslider-noselect">
                 <?php            
-                for ($i = 0; $i < count($categories); $i++) {                  
-                    echo "<option value=" . $categories[$i]['id'] . ">" . $categories[$i]['title'] . "</option>";
+                for ($i = 0; $i < count($categories); $i++) {  
+                    // Set this option as selected if it's the current category.
+                    $selection = ($catid != -1 && $catid == $categories[$i]['id']) ? 'selected="selected "' : '';                    
+                    echo "<option " . $selection . "value=" . $categories[$i]['id'] . ">" . $categories[$i]['title'] . "</option>";
                 }
                     ?>
             </select> 
