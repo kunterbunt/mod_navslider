@@ -17,6 +17,18 @@ defined('_JEXEC') or die;
 <div id='navslider-container'>   
 <!--    Control Bar. -->
     <div id='navslider-control-bar' class='navslider-shadow--bottom'>     
+      <!--         Search. -->      
+      <form class="navslider-control-bar-search" action="#">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+          <label class="navslider-control-bar-search-icon mdl-button mdl-js-button mdl-button--icon" for="navslider-search-textfield">
+            <i class="material-icons">search</i>
+          </label>
+          <div class="mdl-textfield__expandable-holder">
+            <input class="mdl-textfield__input" type="text" id="navslider-search-textfield">
+            <label class="mdl-textfield__label" for="sample-expandable">Expandable Input</label>
+          </div>
+        </div>
+      </form>
 <!--        Categories. -->
       <div id='navslider-control-bar-categories'>
         <p class="navslider-text_category navslider-noselect">Category</p>
@@ -40,18 +52,6 @@ defined('_JEXEC') or die;
                   echo "<p onclick='onTagClicked(this)' data-id='" . $tags[$i]['id'] . "' class='navslider-noselect'>" . $tags[$i]['title'] . "</p>";
           ?>
       </div>
-<!--         Search. -->      
-      <form class="navslider-control-bar-search" action="#">
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
-          <label class="navslider-control-bar-search-icon mdl-button mdl-js-button mdl-button--icon" for="navslider-search-textfield">
-            <i class="material-icons">search</i>
-          </label>
-          <div class="mdl-textfield__expandable-holder">
-            <input class="mdl-textfield__input" type="text" id="navslider-search-textfield">
-            <label class="mdl-textfield__label" for="sample-expandable">Expandable Input</label>
-          </div>
-        </div>
-      </form>
     </div>
 
     <div id='navslider-outer' class="navslider-compact">
