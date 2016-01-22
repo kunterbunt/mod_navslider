@@ -174,7 +174,7 @@ function updateSlider(animate) {
             }
         }
         // Filter by search phrase.
-        if (searchPhrase != "" && tiles[i]['title'].toUpperCase().indexOf(searchPhrase.toUpperCase()) <= -1)
+        if (searchPhrase != "" && tiles[i]['title'].toUpperCase().indexOf(searchPhrase.trim().toUpperCase()) <= -1)
           filteredOut = true;
         if (!filteredOut) {     
           // Construct tile.
