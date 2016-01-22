@@ -21,7 +21,7 @@ defined('_JEXEC') or die;
       <form class="navslider-control-bar-search" action="#">
         <div class="navslider-control-bar-search mdl-textfield mdl-js-textfield mdl-textfield--expandable">
           <label class="mdl-button mdl-js-button mdl-button--icon" for="navslider-search-textfield">
-            <i class="material-icons">search</i>
+            <i class="material-icons">&#xE8B6;</i>
           </label>
           <div class="mdl-textfield__expandable-holder">
             <input class="mdl-textfield__input" type="text" id="navslider-search-textfield">
@@ -43,7 +43,7 @@ defined('_JEXEC') or die;
         </select> 
       </div>      
       <!--        Arrow indicating compact or enlarged view. -->
-        <i class="material-icons navslider-enlarge_button navslider-noselect">keyboard_arrow_right</i>
+      <i class="material-icons navslider-enlarge_button navslider-noselect">&#xE315;</i>
         
         <p class="navslider-text_tags navslider-noselect">Tags</p>
 <!--        Tags. -->
