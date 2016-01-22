@@ -15,6 +15,7 @@ $tags = modNavSliderHelper::getTags();
 $document = JFactory::getDocument();
 $document->addStyleSheet(JURI::base() . 'modules/'.$module->module . "/css/mod_navslider.css");
 $document->addScript(JURI::base().'modules/'.$module->module . "/js/mod_navslider.js");
+$document->addScript(JURI::base().'modules/'.$module->module . "/js/iscroll.js");
 
 require JModuleHelper::getLayoutPath('mod_navslider');
 ?>
