@@ -149,6 +149,7 @@
   cursor: default;
 }
 
+// Control bar.
 #navslider-control-bar {
   width: 100%;
   height: @control-height;
@@ -160,9 +161,48 @@
   position: relative;
   z-index: 2;
 }
-    .navslider-enlarge_button {
-      height: 80%;
-      width: auto;      
+  #navslider-control-bar p {
+    font-size: 2rem;
+    color: #bbb;
+    line-height: @control-height;       
+    display: inline-block;
+    vertical-align: top;
+  }
+    #navslider-control-bar p:hover {
+      cursor: default;                
+    }
+  // Search icon.
+    .navslider-control-bar-search {      
+      display: inline-block !important;
+      margin-left: 8px;
+      height: @control-height;
+      padding: 0 !important;
+      vertical-align: top;
+    }
+//      .navslider-control-bar-search .mdl-textfield {
+//        height: @control-bar;
+//        padding: 0 !important;
+//      }
+    .mdl-textfield i, .mdl-textfield label {
+      color: #999;
+      bottom: 7px !important;
+    }
+      .mdl-textfield.is-focused i {
+        color: black;
+      }
+      .mdl-textfield.is-dirty i {
+        color: @highlight-color;
+      }    
+//     .navslider-control-bar-search .mdl-textfield {
+//       box-sizing: border-box;
+//       height: 100%;
+//        padding: 0;
+//      }
+    // Enlarge button.
+    i.navslider-enlarge_button {
+      font-size: 4rem;            
+      line-height: @control-height;
+      color: @highlight-color;
       -webkit-transition: -webkit-transform .8s ease-in-out;
       transition: transform .35s ease-in-out;
       margin: 0 8px 0 8px;
@@ -173,45 +213,15 @@
       .navslider-enlarge_button.down {        
         -webkit-transform: rotate(90deg);
         transform: rotate(90deg);
-      }
-    .navslider-control-bar-search-icon {
-      bottom: 8px !important;
-    }
-    .mdl-textfield i {
-      color: #999;
-    }
-      .mdl-textfield.is-focused i {
-        color: black;
-      }
-      .mdl-textfield.is-dirty i {
-        color: @highlight-color;
-      }
-    .navslider-control-bar-search {      
-      display: inline-block;
-      margin-left: 8px;
-    }
-     .navslider-control-bar-search .mdl-textfield {
-       box-sizing: border-box;
-       height: 100%;
-        padding: 0;
-      }
+      }    
+    // Categories.
     #navslider-control-bar-categories {
       height: 100%;  
       width: auto;
       display: inline-block;
       white-space: nowrap;
       vertical-align: top;
-    }
-        #navslider-control-bar-categories > p {
-          font-size: 2rem;
-          color: #bbb;
-          line-height: @control-height;       
-          display: inline-block;
-          vertical-align: top;
-        }
-            #navslider-control-bar-categories > p:hover {
-              cursor: default;                
-            }
+    }        
         #navslider-control-bar-categories > select {
           font-size: 1.5rem;
           color: #999;
@@ -222,6 +232,7 @@
           background-color: white;
           border: 1px solid #999;
         }
+    // Tags.
     .navslider-text_tags {
       margin: 0 8px 0 8px;
     }

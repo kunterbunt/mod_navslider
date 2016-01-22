@@ -19,8 +19,8 @@ defined('_JEXEC') or die;
     <div id='navslider-control-bar' class='navslider-shadow--bottom'>     
       <!--         Search. -->      
       <form class="navslider-control-bar-search" action="#">
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
-          <label class="navslider-control-bar-search-icon mdl-button mdl-js-button mdl-button--icon" for="navslider-search-textfield">
+        <div class="navslider-control-bar-search mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+          <label class="mdl-button mdl-js-button mdl-button--icon" for="navslider-search-textfield">
             <i class="material-icons">search</i>
           </label>
           <div class="mdl-textfield__expandable-holder">
@@ -41,10 +41,11 @@ defined('_JEXEC') or die;
           }
               ?>
         </select> 
-<!--        Arrow indicating compact or enlarged view. -->
-        <img alt='Enlarge Button' src="<?php echo JURI::root() . 'modules/' . $module->module?>/imgs/right_arrow.png" class="navslider-enlarge_button navslider-noselect"/>
+      </div>      
+      <!--        Arrow indicating compact or enlarged view. -->
+        <i class="material-icons navslider-enlarge_button navslider-noselect">keyboard_arrow_right</i>
+        
         <p class="navslider-text_tags navslider-noselect">Tags</p>
-      </div>        
 <!--        Tags. -->
       <div id='navslider-control-bar-tags'>            
           <?php
