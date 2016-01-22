@@ -32,6 +32,11 @@ jQuery(document).ready(function() {
     searchPhrase = jQuery(this).val();
     updateSlider(false);
   });
+
+  // Style select boxes.
+  jQuery("#navslider-control-bar-select").select2({
+    minimumResultsForSearch: 10
+  });
   
   // Add articles for test purposes.
   jQuery(".navslider-text_tags").click(function() {
