@@ -14,28 +14,44 @@ defined('_JEXEC') or die;
   }    
 ?>
 
-<div id='navslider-container'>    
+<div id='navslider-container'>   
+<!--    Control Bar. -->
     <div id='navslider-control-bar' class='navslider-shadow--bottom'>     
-        <div id='navslider-control-bar-categories'>
-            <p class="navslider-text_category navslider-noselect">Category</p>
-            <select id='navslider-control-bar-select' class="navslider-noselect">
-                <?php            
-                for ($i = 0; $i < count($categories); $i++) {  
-                    // Set this option as selected if it's the current category.
-                    $selection = ($catid != -1 && $catid == $categories[$i]['id']) ? 'selected="selected "' : '';                    
-                    echo "<option " . $selection . "value=" . $categories[$i]['id'] . ">" . $categories[$i]['title'] . "</option>";
-                }
-                    ?>
-            </select> 
-            <img alt='Enlarge Button' src="<?php echo JURI::root() . 'modules/' . $module->module?>/imgs/right_arrow.png" class="navslider-enlarge_button navslider-noselect"/>
-            <p class="navslider-text_tags navslider-noselect">Tags</p>
-        </div>        
-        <div id='navslider-control-bar-tags'>            
-            <?php
-                for ($i = 0; $i < count($tags); $i++)
-                    echo "<p onclick='onTagClicked(this)' data-id='" . $tags[$i]['id'] . "' class='navslider-noselect'>" . $tags[$i]['title'] . "</p>";
-            ?>
+<!--        Categories. -->
+      <div id='navslider-control-bar-categories'>
+        <p class="navslider-text_category navslider-noselect">Category</p>
+        <select id='navslider-control-bar-select' class="navslider-noselect">
+          <?php            
+          for ($i = 0; $i < count($categories); $i++) {  
+            // Set this option as selected if it's the current category.
+            $selection = ($catid != -1 && $catid == $categories[$i]['id']) ? 'selected="selected "' : '';                    
+            echo "<option " . $selection . "value=" . $categories[$i]['id'] . ">" . $categories[$i]['title'] . "</option>";
+          }
+              ?>
+        </select> 
+<!--        Arrow indicating compact or enlarged view. -->
+        <img alt='Enlarge Button' src="<?php echo JURI::root() . 'modules/' . $module->module?>/imgs/right_arrow.png" class="navslider-enlarge_button navslider-noselect"/>
+        <p class="navslider-text_tags navslider-noselect">Tags</p>
+      </div>        
+<!--        Tags. -->
+      <div id='navslider-control-bar-tags'>            
+          <?php
+              for ($i = 0; $i < count($tags); $i++)
+                  echo "<p onclick='onTagClicked(this)' data-id='" . $tags[$i]['id'] . "' class='navslider-noselect'>" . $tags[$i]['title'] . "</p>";
+          ?>
+      </div>
+<!--         Search. -->      
+      <form class="navslider-control-bar-search" action="#">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+          <label class="navslider-control-bar-search-icon mdl-button mdl-js-button mdl-button--icon" for="navslider-search-textfield">
+            <i class="material-icons">search</i>
+          </label>
+          <div class="mdl-textfield__expandable-holder">
+            <input class="mdl-textfield__input" type="text" id="navslider-search-textfield">
+            <label class="mdl-textfield__label" for="sample-expandable">Expandable Input</label>
+          </div>
         </div>
+      </form>
     </div>
 
     <div id='navslider-outer' class="navslider-compact">
