@@ -14,25 +14,26 @@ defined('_JEXEC') or die;
   }    
 ?>
 
-<div id='navslider-container'>   
+<div id='navslider'>   
 <!--    Control Bar. -->
-    <div id='navslider-control-bar' class='navslider-shadow--bottom'>     
-      <!--         Search. -->      
-      <form class="navslider-control-bar-search" action="#">
-        <div class="navslider-control-bar-search mdl-textfield mdl-js-textfield mdl-textfield--expandable">
-          <label class="mdl-button mdl-js-button mdl-button--icon" for="navslider-search-textfield">
-            <i class="material-icons">&#xE8B6;</i>
-          </label>
-          <div class="mdl-textfield__expandable-holder">
-            <input class="mdl-textfield__input" type="text" id="navslider-search-textfield">
-            <label class="mdl-textfield__label" for="sample-expandable">Expandable Input</label>
+    <div class='navslider__control'>     
+      <!--         Search. --> 
+      <div>
+        <form class="navslider__control--search" action="#">
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+            <label class="mdl-button mdl-js-button mdl-button--icon" for="navslider__control--search-textfield">
+              <i class="material-icons">&#xE8B6;</i>
+            </label>
+            <div class="mdl-textfield__expandable-holder">
+              <input class="mdl-textfield__input" type="text" id="navslider__control--search-textfield">
+              <label class="mdl-textfield__label"></label>
+            </div>
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
 <!--        Categories. -->
-      <div id='navslider-control-bar-categories'>
-        <p class="navslider-text_category navslider-noselect">Category</p>
-        <select id='navslider-control-bar-select' class="navslider-noselect">
+      <div class='navslider__control--categories'>        
+        <select id="navslider__control--categories-select">
           <?php            
           for ($i = 0; $i < count($categories); $i++) {  
             // Set this option as selected if it's the current category.
@@ -41,32 +42,40 @@ defined('_JEXEC') or die;
           }
               ?>
         </select> 
-      </div>      
-      <!--        Arrow indicating compact or enlarged view. -->
-      <i class="material-icons navslider-enlarge_button navslider-noselect">&#xE315;</i>
-        
-        <p class="navslider-text_tags navslider-noselect">Tags</p>
+      </div>              
 <!--        Tags. -->
-      <div id='navslider-control-bar-tags'>            
+      <div class='navslider__control--tags'>            
           <?php
               for ($i = 0; $i < count($tags); $i++)
-                  echo "<p onclick='onTagClicked(this)' data-id='" . $tags[$i]['id'] . "' class='navslider-noselect'>" . $tags[$i]['title'] . "</p>";
+                  echo "<p onclick='onTagClicked(this)' data-id='" . $tags[$i]['id'] . "' class='navslider--noselect'>" . $tags[$i]['title'] . "</p>";
           ?>
       </div>
     </div>
 
-    <div id='navslider-outer' class="navslider-compact">
-        <div id='navslider'>
-            <div class="navslider-showbox navslider-hide">
-              <div class="navslider-loader">
-                <svg class="navslider-circular" viewBox="25 25 50 50">
-                  <circle class="navslider-path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
-                </svg>
-              </div>
-            </div>
-            <div id='navslider-articles'>                
-               
-            </div>
-        </div>
+<!--    Prefix arrow.-->
+    <div class="mdl-grid mdl-grid--no-spacing navslider__articles-container--timeline-arrow">
+      <div class="mdl-layout-spacer"></div> 
+      <div class="mdl-cell--6-col">        
+        <i class="material-icons">&#xE5C5;</i>
+        <div class="vertical-line vertical-line--light vertical-line--50px vertical-line--light"></div>        
+      </div>
+      <div class="mdl-layout-spacer"></div> 
+    </div>
+<!--  Articles.-->
+    <div class="mdl-grid navslider__articles-container">            
+      <div class="mdl-layout-spacer"></div>  
+      <div id='navslider__articles' class="mdl-cell--6-col">        
+<!--        Articles go here.-->        
+      </div>
+      <div class="mdl-layout-spacer"></div>  
+    </div>
+<!--    Suffix arrow.-->
+    <div class="mdl-grid mdl-grid--no-spacing navslider__articles-container--timeline-arrow">
+      <div class="mdl-layout-spacer"></div> 
+      <div class="mdl-cell--6-col">        
+        <div class="vertical-line vertical-line--light vertical-line--50px vertical-line--light"></div>
+        <i class="material-icons">&#xE5C7;</i>      
+      </div>
+      <div class="mdl-layout-spacer"></div> 
     </div>
 </div>

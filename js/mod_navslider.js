@@ -11,71 +11,28 @@ jQuery(document).ready(function() {
   checkIfUserOnMobile();     
 
   // Set onchange function for selection box and call it now to load it for the first time.
-  jQuery("#navslider-control-bar-select").bind("change", function() {
-      navsliderOnCategorySelected(document.getElementById('navslider-control-bar-select'));
+  jQuery("#navslider__control--categories-select").bind("change", function() {
+      navsliderOnCategorySelected();
   }).change();
   
-  // Enlarge button functions.
-  jQuery(".navslider-enlarge_button").click(function() {
-    jQuery(this).toggleClass("down");   
-    var navslider_outer = jQuery("#navslider-outer");
-    navslider_outer.toggleClass("navslider-enlarged");
-    navslider_outer.toggleClass("navslider-compact");
-    if (navslider_outer.hasClass("navslider-compact"))
-      assignIScroll();
-    else if (tileSlider != null)
-      tileSlider.destroy();
-  });
-  
   // Search button function.
-  jQuery("#navslider-search-textfield").on("change keydown paste input", function() {
+  jQuery(".navslider__control--search-textfield").on("change keydown paste input", function() {
     searchPhrase = jQuery(this).val();
     updateSlider(false);
   });
 
   // Style select boxes.
-  jQuery("#navslider-control-bar-select").select2({
+  jQuery("#navslider__control--categories-select").select2({
     minimumResultsForSearch: 10
   });
   
-  // Add articles for test purposes.
-  jQuery(".navslider-text_tags").click(function() {
-    for (var i = 0, j = tiles.length; i < j; i++)
-      tiles.push(tiles[i]);    
-    updateSlider(true);
-  });
+//  // Add articles for test purposes.
+//  jQuery(".navslider-text_tags").click(function() {
+//    for (var i = 0, j = tiles.length; i < j; i++)
+//      tiles.push(tiles[i]);    
+//    updateSlider(true);
+//  });
 });
-
-function assignIScroll() {
-  if (tileSlider != null)
-    tileSlider.destroy();
-  if (isMobile) { 
-      tileSlider = new IScroll('#navslider-outer', { 
-        scrollX: true, 
-        scrollY: false, 
-        mouseWheel: false,
-        snap: 'a',        
-        eventPassthrough: true
-      });   
-  // No eventPassthrough for desktop device as that forces you to click twice to be able to scroll.
-  } else {
-      tileSlider = new IScroll('#navslider-outer', { 
-        scrollX: true, 
-        scrollY: false, 
-        snap: 'a',        
-        mouseWheel: false,
-        eventPassthrough: false        
-      }); 
-  }        
-  // Prevent clicking links while scrolling.
-  tileSlider.on('scrollStart', function() {
-    jQuery("a.navslider-slide").addClass("navslider-disabled");
-  });
-  tileSlider.on('scrollEnd', function() {
-    jQuery("a.navslider-slide").removeClass("navslider-disabled");
-  });
-  
-}
 
 /**
  * Keeps track of which tags have been selected by the user by adding or removing it in selectedTags array.
@@ -98,12 +55,10 @@ function onTagClicked(tag) {
  * Upon recieving the JSON-formatted result it parses all article data and updates the tiles array. Finally it calls updateSlider().
  * @param {integer} categorySelector 
  */
-function navsliderOnCategorySelected(categorySelector) {    
-    var selectedValue = categorySelector.value;
-    // Show loader.
-    jQuery(".navslider-showbox").removeClass("hide");
+function navsliderOnCategorySelected() {      
+    var selectedValue = jQuery('#navslider__control--categories-select').val(); 
     // Empty slider.
-    jQuery("#navslider-articles").empty();
+    jQuery("#navslider__articles").empty();
     var request = {
         'option' : 'com_ajax',
         'module' : 'navslider',
@@ -115,8 +70,8 @@ function navsliderOnCategorySelected(categorySelector) {
     jQuery.ajax({
         type   : 'POST',
         data   : request,
-        success: function (response) {              
-            var result = JSON.parse(response);                
+        success: function (response) {            
+            var result = JSON.parse(response);           
             baseUrl = result['url'];            
             var itemsAdded = 0;            
             tiles = [];       
@@ -126,11 +81,8 @@ function navsliderOnCategorySelected(categorySelector) {
                 var title = result['articles'][i]['title'];
                 var intro_text = result['articles'][i]['introtext'];                
                 var alias = result['articles'][i]['alias'];   
-                
-                var image_intro = result['articles'][i]['image_intro'];                   
-                if (image_intro == "")
-                    image_intro = "modules/mod_navslider/imgs/no_image.png"  
-                    
+                var date = result['articles'][i]['publish_up'];                 
+                var image_intro = result['articles'][i]['image_intro'];
                 var tags = [];
                 for (var j = 0; j < result['articles'][i]['tags'].length; j++) {
                     tags.push({title: result['articles'][i]['tags'][j]['title'], 
@@ -143,7 +95,8 @@ function navsliderOnCategorySelected(categorySelector) {
                     alias: alias,
                     image_intro: image_intro,
                     tags: tags,
-                    intro_text: intro_text
+                    intro_text: intro_text,
+                    date: date
                 };
                 
                 // Append to collection.
@@ -162,8 +115,11 @@ function navsliderOnCategorySelected(categorySelector) {
  * Fills the slider with articles that match the current filter rules. 
  */
 function updateSlider(animate) {      
-    jQuery("#navslider-articles").empty();
+    jQuery("#navslider__articles").empty();
     var numberOfTilesAdded = 0;
+    var monthNames = ["January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
     for (var i = 0; i < tiles.length; i++) {
         // If tags are selected then filter out those articles that don't match.
         filteredOut = false;
@@ -182,27 +138,32 @@ function updateSlider(animate) {
         if (searchPhrase != "" && tiles[i]['title'].toUpperCase().indexOf(searchPhrase.trim().toUpperCase()) <= -1)
           filteredOut = true;
         if (!filteredOut) {     
-          // Construct tile.
-          // Everything is inside the link to the article.
-          var tile = jQuery("<a href='" + baseUrl + tiles[i]['alias'] + "' class='navslider-slide'></a>");
-          // Image is capsulated inside a figure, so the image's opacity can be altered for a hover effect.
-          var tile_image = jQuery("<figure><img class='navslider-slide--img' alt='intro image' src='" + tiles[i]['image_intro'] + "'></figure>");
+          // Construct tile.          
+          var tile = jQuery("<div class='navslider__article'></div>");
+          // The link contains all visible elements.
+          var tile_link = jQuery("<a href='" + baseUrl + tiles[i]['alias'] + "'></a>");
+          tile_link.appendTo(tile);      
+          // Date.     
+          var date = new Date(tiles[i]['date']);          
+          var tile_date = jQuery("<div class='navslider__article--date'>" + monthNames[date.getMonth()] + " " + date.getDay() + "</div>");
+          tile_date.appendTo(tile_link);
+          // Visible content except for date for nicer shadow effects.
+          var tile_visible_content = jQuery("<div class='navslider__article--content'></div>");
+          tile_visible_content.appendTo(tile_link);
+          // Image.
+          var tile_image = jQuery("<div class='navslider__article--image' style='background: url(" + tiles[i]['image_intro'] + ")'></div>");
           if (animate)
             tile_image.hide()
-          tile_image.appendTo(tile);
+          tile_image.appendTo(tile_visible_content);          
+          // Title.
+          var tile_title = jQuery("<h3 class='navslider__article--title'>" + tiles[i]['title'] + "</h3>");
+          tile_title.appendTo(tile_visible_content);
           
-          // The small title inside a span.
-          var tile_title = jQuery("<span class='navslider-slide--title'>" + tiles[i]['title'] + "</span>");
-          tile_title.appendTo(tile);
-          
-          // Title for enlarged view.
-          var tile_title_expanded = jQuery("<div class='navslider-slide--title_expanded'>" + tiles[i]['title'] + "</div>");
-          tile_title_expanded.appendTo(tile);
-          // Intro text for enlarged view.
-          var tile_introtext = jQuery("<div class='navslider-slide--introtext'>" + tiles[i]['intro_text'] + "</div>");
-          tile_introtext.appendTo(tile);
-          
-          tile.appendTo(jQuery("#navslider-articles"));
+          var articles = jQuery("#navslider__articles");
+          tile.appendTo(articles);
+          // Grey line after an article.
+          var line = jQuery("<div class='vertical-line vertical-line--light vertical-line--50px vertical-line--light'></div>");
+          line.appendTo(articles);
           if (animate)
             tile_image.fadeIn(fadeDuration);
           numberOfTilesAdded++;
@@ -210,12 +171,7 @@ function updateSlider(animate) {
     }            
         
     if (numberOfTilesAdded == 0)
-        jQuery("#navslider-articles").append("<p id='navslider-no-articles-msg' >Nothing to show.</p>");
-    
-    // Hide loader.
-    jQuery(".navslider-showbox").addClass("hide");
-    if (numberOfTilesAdded > 0)
-      assignIScroll();
+        jQuery("#navslider__articles").append("<p class='navslider__articles--no-content-message'>Nothing to show</p>");            
 }
 
 function checkIfUserOnMobile() {
